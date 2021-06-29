@@ -4,6 +4,7 @@ services:
  
     php:
         image: kb7pwc/php
+        restart: always
         ports:
             - 9000:9000
         volumes:
@@ -11,9 +12,11 @@ services:
             - ./docker/php/www.conf:/usr/local/etc/php-fpm.d/www.conf
         environment:
             MYSQL_USER: ${MYSQL_USER}
- 
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            
     nginx:
         image: kb7pwc/nginx
+        restart: always
         ports:
             - 80:80
         volumes:
@@ -21,9 +24,11 @@ services:
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
         depends_on:
             - php
+            - mysql
  
     mysql:
         image: kb7pwc/db
+        restart: always
         ports:
             - 3306:3306
         depends_on:
